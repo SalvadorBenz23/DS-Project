@@ -1,0 +1,29 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: mongodb-backup
+  namespace: ds-project
+spec:
+  schedule: "0 2 * * *"  # This schedules the job to run daily at 2am
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: backup
+            image: bitnami/mongodb:latest
+            command:
+            - /bin/sh
+            - -c
+            - >
+              mongodump --host mongodb --db DATABASE_NAME_HERE --out /backup/$(date +\%F-\%T) &&
+              tar -czf /backup/backup-$(date +\%F-\%T).tar.gz /backup/$(date +\%F-\%T) &&
+              rm -rf /backup/$(date +\%F-\%T)
+            volumeMounts:
+            - name: backup-storage
+              mountPath: /backup
+          restartPolicy: OnFailure
+          volumes:
+          - name: backup-storage
+            persistentVolumeClaim:
+              claimName: mongodb-pvc
