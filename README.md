@@ -7,30 +7,36 @@ DONE:
 - Kick ass!
 - Be fabulous!
 - Have the best team-mates ever! <3
+
+26.05
+- Added backend scripts
+- Ordered the files and created ToolKit
+- Services have been melted in deployment templates for organisational purposes
+- Basic test of the basic infrastructure will be done (http, no cert)
 ________________________________________
 TO CHECK:
 ----------------------------------------
 
-- **namespace**: good to go
+- **backup-cronjob**: Write DB name here when instanciated. Checking that the volume claim is not using the same volume as the db. If the volume fails, all is lost. Back ups need to be store separately
 
-- **backup-cronjob**: database name should be given here and we should think of a better solution for the volume claim because it's using the same volume as the db. If the volume fails, all is lost. Back ups need to be store separately
-
-- **mongodb-deployment**: we will not be using the image from the repo (too much work with APIs) but we will pull an out-of-the-box image from docker hub
-- **mongodb-service**: The default port for MongoDB is usually 2707, will have to check with Sunny if the front-end config is already listening to another port
+- **mongodb-deployment**: secrets and credentials need to be defined here.
 - **mongodb-pvc**: could be a bit more nerdy and add a StorageClass like rauncher
-
-- **frontend-deployment**:  needs more work. I don't know what image is the best for Node.js deployments
 
 - **ingress**: need to update spec:- host: with our subdomain once defined
 
-- **frontend-hpa**: can go as it is. Just need to check if the apiVersion is the right one (apiVersion: autoscaling/v2 -> looks suspicious)
+________________________________________
+TO TEST:
+----------------------------------------
+- **namespace**: good to go
+- **mongodb-service**: done
+- **frontend-deployment**:  done
+- **frontend-hpa**: done
 
 ________________________________________
 TO DO NEXT:
 ----------------------------------------
-
-- Deploy a vault k8 or let's encrypt to secure the app
 - Validate first tests and create configmaps and secrets
+- Deploy a vault k8 or let's encrypt to secure the app
 - Think of deployment with Helm charts
 - Think of deployment with Kustomize 
 - Think of a way to pull logs from the front-end pods and integrate them to a monitoring solution

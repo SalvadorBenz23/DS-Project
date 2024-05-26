@@ -1,13 +1,13 @@
-apiVersion: autoscaling/v1
+apiVersion: autoscaling/v2beta2
 kind: HorizontalPodAutoscaler
 metadata:
-  name: frontend-hpa
+  name: backend-hpa
   namespace: ds-project
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: frontend
+    name: backend
   minReplicas: 2
   maxReplicas: 6
   metrics:
