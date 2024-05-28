@@ -15,33 +15,33 @@ spec:
     spec:
       containers:
       - name: mongodb
-        image: mongo:latest
+        image: {{ .Values.mongodbImage.repository }}:{{ .Values.mongodbImage.tag }}
         ports:
-        - containerPort: 27017
+        - containerPort: {{ .Values.mongodbService.containerPort }}
         env:
         - name: MONGO_INITDB_ROOT_USERNAME
-          value: "myUser"
+          value: {{ .Values.mongodbEnv.MONGO_INITDB_ROOT_USERNAME }}
         - name: MONGO_INITDB_ROOT_PASSWORD
-          value: "myPassword"
+          value: { .Values.mongodbEnv.MONGO_INITDB_ROOT_PASSWORD }
 
         volumeMounts:
-        - name: mongodb-storage
-          mountPath: /data/db
+        - name: {{ .Values.mongodbVolume.name }}
+          mountPath: {{ .Values.mongodbVolume.mountPath }}
       volumes:
-      - name: mongodb-storage
+      - name: {{ .Values.mongodbVolume.name }}
         persistentVolumeClaim:
           claimName: mongodb-pvc
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: mongodb
+  name: {{ .Values.mongodbService.name }}
   namespace: ds-project
 spec:
   selector:
     app: mongodb
   ports:
   - protocol: TCP
-    port: 27017
-    targetPort: 27017
+    port: {{ .Values.mongodbService.port }}
+    targetPort: {{ .Values.mongodbService.targetPort }}
   type: ClusterIP

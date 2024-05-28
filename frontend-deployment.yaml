@@ -15,20 +15,20 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: sunnyeyles/ds_client:latest
+        image: {{ .Values.frontendImage.repository }}:{{ .Values.frontendImage.tag }}
         ports:
-        - containerPort: 80
+        - containerPort: {{ .Values.frontendService.containerPort }}
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: frontend
+  name: {{ .Values.frontendService.name }}
   namespace: ds-project
 spec:
   selector:
     app: frontend
   ports:
   - protocol: TCP
-    port: 80
-    targetPort: 80
+    port: {{ .Values.frontendService.port }}
+    targetPort: {{ .Values.frontendService.targetPort }}
   type: ClusterIP

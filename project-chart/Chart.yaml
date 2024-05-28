@@ -1,0 +1,10 @@
+apiVersion: v1
+name: SaPeSu-HELM
+version: 1.0.0
+description: The HELM chart for deploying the SaPeSu app
+maintainers: 
+  - name: Peregrine Wade
+    email: peregrinewade@gmail.com
+  - name: Salvador Benites
+    email: insert email here
+  - name: Sunny Eyles

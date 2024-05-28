@@ -1,0 +1,71 @@
+namespace: ds-project
+
+host: our_subdomain.cloudns.net
+
+frontendImage:
+  repository: sunnyeyles/ds_client
+  tag: latest
+#  pullPolicy: 
+
+backendImage:
+  repository: sunnyeyles/ds_client
+  tag: latest
+#  pullPolicy: 
+
+mongodbImage:
+  repository: mongo
+  tag: latest
+#  pullPolicy: 
+
+frontendService:
+  name: frontend
+  port: 80
+  targetPort: 80
+  containerPort: 80
+
+
+backendService:
+  name: backend
+  port: 5000
+  targetPort: 5000
+  containerPort: 5000
+
+mongodbService:
+  name: mongodb
+  port: 27017
+  targetPort: 27017
+  containerPort: 27017
+
+frontendHpa:
+  minReplicas: 2
+  maxReplicas: 6
+  targetCPUUtilizationPercentage: 70
+
+backendHpa:
+  minReplicas: 2
+  maxReplicas: 6 
+  targetCPUUtilizationPercentage: 70
+
+mongodbVolume:
+  name: mongodb-storage
+  mountPath: /data/db
+  accessMode: ReadWriteOnce
+  storage: 10Gi
+#  storageClassName:
+
+mongodbEnv:
+  MONGO_INITDB_ROOT_USERNAME: "myUser"
+  MONGO_INITDB_ROOT_PASSWORD: "myPassword"
+
+backupVolume:
+  name: backup-storage
+  mountPath: /backup
+#  accessMode: 
+#  storage: 
+#  storageClassName:
+
+backupContainer:
+  repository: bitnami/mongodb
+  tag: latest
+  schedule: "0 2 * * *"
+#  command:

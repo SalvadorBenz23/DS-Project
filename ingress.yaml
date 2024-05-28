@@ -7,7 +7,7 @@ metadata:
     nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   rules:
-  - host: our_subdomain.cloudns.net
+  - host: {{ .Values.host }}
     http:
       paths:
       - path: /frontend

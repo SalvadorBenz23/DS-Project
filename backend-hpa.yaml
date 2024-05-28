@@ -8,12 +8,12 @@ spec:
     apiVersion: apps/v1
     kind: Deployment
     name: backend
-  minReplicas: 2
-  maxReplicas: 6
+  minReplicas: {{ .Values.backendHpa.minReplicas }}
+  maxReplicas: {{ .Values.backendHpa.maxReplicas }}
   metrics:
   - type: Resource
     resource:
       name: cpu
       target:
         type: Utilization
-        averageUtilization: 70
+        averageUtilization: {{ .Values.backendHpa.targetCPUUtilizationPercentage}}

@@ -4,14 +4,14 @@ metadata:
   name: mongodb-backup
   namespace: ds-project
 spec:
-  schedule: "0 2 * * *"  # This schedules the job to run daily at 2am
+  schedule: {{ .Values.backupContainer.schedule }}  # This schedules the job to run daily at 2am
   jobTemplate:
     spec:
       template:
         spec:
           containers:
           - name: backup
-            image: bitnami/mongodb:latest
+            image: {{ .Values.backupContainer.repository }}:{{ .Values.backupContainer.tag }}
             command:
             - /bin/sh
             - -c
@@ -20,10 +20,10 @@ spec:
               tar -czf /backup/backup-$(date +\%F-\%T).tar.gz /backup/$(date +\%F-\%T) &&
               rm -rf /backup/$(date +\%F-\%T)
             volumeMounts:
-            - name: backup-storage
-              mountPath: /backup
+            - name: {{ .Values.backupVolume.name }}
+              mountPath: {{ .Values.backupVolume.mountPath }}
           restartPolicy: OnFailure
           volumes:
-          - name: backup-storage
+          - name: {{ .Values.backupVolume.name }}
             persistentVolumeClaim:
               claimName: mongodb-pvc

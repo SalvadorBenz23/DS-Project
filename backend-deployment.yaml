@@ -15,20 +15,20 @@ spec:
     spec:
       containers:
       - name: backend
-        image: sunnyeyles/ds_server:latest
+        image: {{ .Values.backendImage.repository }}:{{ .Values.backendImage.tag }}
         ports:
-        - containerPort: 5000
+        - containerPort: {{ .Values.backendService.containerPort }}
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: backend
+  name: {{ .Values.backendService.name }}
   namespace: ds-project
 spec:
   selector:
     app: backend
   ports:
   - protocol: TCP
-    port: 5000
-    targetPort: 5000
+    port: {{ .Values.backendService.port }}
+    targetPort: {{ .Values.backendService.targetPort }}
   type: ClusterIP
